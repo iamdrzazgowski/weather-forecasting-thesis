@@ -1,68 +1,47 @@
 from __future__ import annotations
 
-import subprocess
 import sys
 from pathlib import Path
 
 
-REPO_URL = "https://github.com/iamdrzazgowski/weather-forecasting-thesis.git"
 REPO_DIR = Path("/content/weather-forecasting-thesis")
-SRC_DIR = REPO_DIR / "src"
-
-
-def run(command: list[str]) -> None:
-    print("$", " ".join(command))
-    subprocess.run(command, check=True)
 
 
 def setup_colab() -> Path:
-    print("=== Weather Forecasting Thesis — Colab Bootstrap ===")
+    print("=== Weather Forecasting Thesis — Colab Setup ===")
 
-    # 1. Clone repository if necessary
-    if not REPO_DIR.exists():
-        print("\n[1/6] Cloning repository...")
-        run([
-            "git",
-            "clone",
-            REPO_URL,
+    # 1. Configure Python path
+    print("\n[1/3] Configuring Python path...")
+
+    src_dir = REPO_DIR / "src"
+
+    if str(src_dir) not in sys.path:
+        sys.path.insert(0, str(src_dir))
+
+    print(f"Source: {src_dir}")
+
+    # 2. Install project
+    print("\n[2/3] Installing project...")
+
+    import subprocess
+
+    subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "pip",
+            "install",
+            "-e",
             str(REPO_DIR),
-        ])
-    else:
-        print("\n[1/6] Repository already exists.")
+            "--quiet",
+        ],
+        check=True,
+    )
 
-        # Update repository
-        print("Updating repository...")
-        run([
-            "git",
-            "-C",
-            str(REPO_DIR),
-            "pull",
-            "--ff-only",
-        ])
+    print("Project installed.")
 
-    # 2. Add src to Python path
-    print("\n[2/6] Configuring Python path...")
-
-    if str(SRC_DIR) not in sys.path:
-        sys.path.insert(0, str(SRC_DIR))
-
-    print(f"Python path: {SRC_DIR}")
-
-    # 3. Install project dependencies
-    print("\n[3/6] Installing project dependencies...")
-
-    run([
-        sys.executable,
-        "-m",
-        "pip",
-        "install",
-        "-e",
-        str(REPO_DIR),
-        "--quiet",
-    ])
-
-    # 4. Test project import
-    print("\n[4/6] Testing project import...")
+    # 3. Verify environment
+    print("\n[3/3] Checking environment...")
 
     from weather_forecasting.config import load_config
 
@@ -70,9 +49,6 @@ def setup_colab() -> Path:
 
     print("weather_forecasting: OK")
     print(f"Config: {config}")
-
-    # 5. Check GPU
-    print("\n[5/6] Checking GPU...")
 
     try:
         import torch
@@ -82,18 +58,10 @@ def setup_colab() -> Path:
 
         if torch.cuda.is_available():
             print(f"GPU: {torch.cuda.get_device_name(0)}")
-        else:
-            print("GPU: not available")
 
     except ImportError:
         print("PyTorch is not installed.")
 
-    # 6. Final information
-    print("\n[6/6] Environment information...")
-    print(f"Python: {sys.version.split()[0]}")
-    print(f"Executable: {sys.executable}")
-    print(f"Repository: {REPO_DIR}")
-
-    print("\n✅ Colab bootstrap completed.")
+    print("\n✅ Colab environment ready.")
 
     return REPO_DIR
