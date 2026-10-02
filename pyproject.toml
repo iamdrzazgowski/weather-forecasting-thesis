@@ -1,0 +1,36 @@
+[project]
+name = "weather-forecasting-thesis"
+version = "0.1.0"
+description = "Analysis of accuracy and interpretability of machine learning models for multiparameter weather forecasting"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+
+authors = [
+    { name = "iamdrzazgowski", email = "iamdrzazgowski@gmail.com" }
+]
+
+dependencies = [
+    "h5netcdf",
+    "ipykernel",
+    "jupyter",
+    "matplotlib",
+    "netcdf4",
+    "numpy",
+    "pandas",
+    "pyyaml",
+    "scikit-learn",
+    "scipy",
+    "seaborn",
+    "shap",
+    "statsmodels",
+    "xarray",
+    "xgboost",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.22,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "weather_forecasting"
+module-root = "src"

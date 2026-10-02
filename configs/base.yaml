@@ -1,0 +1,14 @@
+project:
+  name: weather-forecasting-thesis
+  seed: 42
+
+experiment:
+  horizons:
+    - 1
+    - 2
+    - 3
+
+paths:
+  data: data
+  models: models
+  results: results
