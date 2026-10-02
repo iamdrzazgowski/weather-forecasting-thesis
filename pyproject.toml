@@ -3,7 +3,7 @@ name = "weather-forecasting-thesis"
 version = "0.1.0"
 description = "Analysis of accuracy and interpretability of machine learning models for multiparameter weather forecasting"
 readme = "README.md"
-requires-python = ">=3.11,<3.12"
+requires-python = ">=3.11,<3.14"
 
 authors = [
     { name = "iamdrzazgowski", email = "iamdrzazgowski@gmail.com" }
